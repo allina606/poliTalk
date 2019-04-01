@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { GOOGLE_KEY } from "./keys.js";
 import { dataRender } from "./civicAPI.js";
 
-function OfficialName(props) {
+function Official(props) {
   return (
     <div class="row">
       <img class="col-6" src={props.image} alt="<No image>" height="100" width="100" />
@@ -64,7 +64,8 @@ class HomePage extends Component {
     var data = [];
     var office = [];
     console.log(this.state.data);
-    // console.log(this.state.data.offices);
+
+    //Get offices from JSON
     if(this.state.data.offices != null) {
       office = this.state.data.offices.map(obj => {
         let data = {
@@ -73,26 +74,23 @@ class HomePage extends Component {
         };
         return data;
       });
-      console.log(office);
     }
+
+    //Get Representative data from JSON
     for (var key in this.state.data.officials) {
       data.push(this.state.data.officials[key]);
     }
-    //Add Office to data
+
+    //Add Office data to Representative data
     for(let j = 0; j < office.length; j++) {
-      console.log("office", office[j].name, office[j].officialIndices);
       for(let idx of office[j].officialIndices){
-        console.log("idx", idx);
         data[idx].office = [];
         data[idx].office.push(office[j].name);
       }
     }
-    console.log("rep", data);
-
-    console.log("offices", office.length, "rep", data.length);
 
     for (var i = 0; i < data.length; i++) {
-      dataRender.push(<OfficialName key={i} name={data[i].name} party={data[i].party} image={data[i].photoUrl} office={data[i].office} />);
+      dataRender.push(<Official key={i} name={data[i].name} party={data[i].party} image={data[i].photoUrl} office={data[i].office} />);
     }
 
     return (
